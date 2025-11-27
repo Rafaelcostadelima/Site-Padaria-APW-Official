@@ -223,9 +223,9 @@ function App() {
                     <>
                         <div className="feedback-header"><h2>Sua opinião importa!</h2><p>Ajude a Padaria Riba City a melhorar.</p></div>
                         <form className="feedback-form" onSubmit={handleFeedbackSubmit}>
-                        <div className="input-group"><input type="text" name="Nome" placeholder="Seu nome*" required /></div>
-                        <div className="input-group"><input type="email" name="Email" placeholder="Seu email*" required /></div>
-                        <div className="input-group message-group"><p className="label-mensagem">Mensagem</p><div className="textarea-container"><textarea name="Mensagem" placeholder="Escreva a sua mensagem aqui...*" required></textarea><div className="avaliacao-icons"><motion.button type="button" className={`icon-btn ${avaliacao==='like'?'active-like':''}`} onClick={()=>setAvaliacao('like')} whileTap={{scale:1.2}}><ThumbUp active={avaliacao==='like'}/></motion.button><motion.button type="button" className={`icon-btn ${avaliacao==='dislike'?'active-dislike':''}`} onClick={()=>setAvaliacao('dislike')} whileTap={{scale:1.2}}><ThumbDown active={avaliacao==='dislike'}/></motion.button></div></div></div>
+                        <div className="input-group"><input type="text" name="nome" placeholder="Seu nome*" required /></div>
+                        <div className="input-group"><input type="email" name="email" placeholder="Seu email*" required /></div>
+                        <div className="input-group message-group"><p className="label-mensagem">Mensagem</p><div className="textarea-container"><textarea name="mensagem" placeholder="Escreva a sua mensagem aqui...*" required></textarea><div className="avaliacao-icons"><motion.button type="button" className={`icon-btn ${avaliacao==='like'?'active-like':''}`} onClick={()=>setAvaliacao('like')} whileTap={{scale:1.2}}><ThumbUp active={avaliacao==='like'}/></motion.button><motion.button type="button" className={`icon-btn ${avaliacao==='dislike'?'active-dislike':''}`} onClick={()=>setAvaliacao('dislike')} whileTap={{scale:1.2}}><ThumbDown active={avaliacao==='dislike'}/></motion.button></div></div></div>
                         <motion.button className="btn-enviar" whileHover={{scale:1.02}} whileTap={{scale:0.95}} disabled={enviando}>{enviando ? "Enviando..." : "Enviar Feedback"}</motion.button>
                         </form>
                     </>
