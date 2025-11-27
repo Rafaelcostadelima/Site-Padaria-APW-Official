@@ -237,7 +237,7 @@ function App() {
               <div className="carrinho-header"><h2>Meu Pedido</h2></div>
               <div className="carrinho-body">
                 <div className="linha-info"><span className="label">Itens:</span><ul className="lista-pedidos">{carrinho.length===0?(<li>Carrinho vazio...</li>):(carrinho.map((item,i)=>(<li key={i}>{item.nome}</li>)))}</ul></div>
-                <div className="linha-info linha-botoes"><span className="label">Qtd:</span><div className="botoes-qtd"><button onClick={()=>manipularQuantidade('remover')}>-</button><button onClick={()=>manipularQuantidade('adicionar')}>+</button></div></div>
+                <div className="linha-info linha-botoes"><span className="label">Produto:</span><div className="botoes-qtd"><button onClick={()=>manipularQuantidade('remover')}>-</button><button onClick={()=>manipularQuantidade('adicionar')}>+</button></div></div>
                 <div className="linha-total"><span className="label">Total:</span><span className="valor">R$ {valorTotal.toFixed(2).replace('.', ',')}</span></div>
                 <div className="campo-obs"><label>Observações:</label><input type="text" placeholder="Ex: Tirar cebola, aquecer..." /></div>
                 
