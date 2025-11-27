@@ -236,7 +236,7 @@ function App() {
           ) : telaSobre ? (
             <motion.div key="sobre" className="sobre-container" initial={{opacity:0, y:30}} animate={{opacity:1, y:0}} exit={{opacity:0, y:30}}>
               <div className="sobre-esquerda">
-                <div className="card--da-loja"><img src="img/fachada-da-loja.jpg" alt="Fachada" className="img-fachada"/><div className="endereco-box"><MapPinIcon /><p>Rua Dr. Ricardo Gonçalves, 170</p></div></div>
+                <div className="card-da-loja"><img src="img/fachada-da-loja.jpg" alt="Fachada" className="img-fachada"/><div className="endereco-box"><MapPinIcon /><p>Rua Dr. Ricardo Gonçalves, 170</p></div></div>
               </div>
               <div className="sobre-direita">
                 <div className="botoes-contato"><a href="" target="_blank" rel="noreferrer" className="btn-social instagram"><div className="icon-social"><InstaIcon /></div><span>@Padaria_RibaCity</span></a><a href="" target="_blank" rel="noreferrer" className="btn-social whatsapp"><div className="icon-social"><WhatsIcon /></div><span>11 90835-4792</span></a></div>
