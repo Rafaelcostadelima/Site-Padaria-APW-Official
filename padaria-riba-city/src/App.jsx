@@ -56,7 +56,7 @@ function App() {
   const carouselRef = useRef();
   const [width, setWidth] = useState(0);
 
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xdkrkznk"; 
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xdkrkznk";
 
   useEffect(() => {
     const updateWidth = () => {
@@ -105,12 +105,11 @@ function App() {
     }
   };
 
-  // --- FUNÇÃO DE FINALIZAR PEDIDO (NOVA) ---
   const finalizarPedido = () => {
-    if (carrinho.length === 0) return; // Não faz nada se vazio
-    setTelaCarrinho(false); // Fecha o carrinho
-    setPedidoConfirmado(true); // Abre a tela de sucesso
-    setCarrinho([]); // Limpa o carrinho
+    if (carrinho.length === 0) return;
+    setTelaCarrinho(false); 
+    setPedidoConfirmado(true);
+    setCarrinho([]);
   };
 
   const handleVoltar = () => {
