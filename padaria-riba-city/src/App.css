@@ -551,3 +551,58 @@ footer p {
   font-size: 0.9rem;
   margin: 0;
 }
+
+/* --- NOTIFICAÇÃO TOAST --- */
+.toast-notification {
+  position: fixed;
+  top: 80px; /* Um pouco abaixo do header */
+  left: 20px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 500; /* Acima de quase tudo */
+  width: 280px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+
+.toast-content {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.toast-content img {
+  width: 50px; height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.toast-content p {
+  font-family: 'Inknut Antiqua', serif;
+  font-size: 0.9rem;
+  color: #333;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.toast-content strong {
+  color: var(--laranja-escuro);
+}
+
+.toast-progress {
+  height: 4px;
+  background-color: var(--laranja-escuro);
+  width: 100%;
+}
+
+/* Ajuste para mobile (opcional) */
+@media (max-width: 480px) {
+  .toast-notification {
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza no topo se a tela for pequena */
+    width: 90%;
+    top: 20px; /* Fica acima do header no mobile */
+  }
+}

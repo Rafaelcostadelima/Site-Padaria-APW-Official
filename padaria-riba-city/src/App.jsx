@@ -40,8 +40,6 @@ function App() {
   const [telaFeedback, setTelaFeedback] = useState(false);
   const [telaSobre, setTelaSobre] = useState(false);
   const [menuAberto, setMenuAberto] = useState(false);
-  
-  // ESTADO NOVO: PEDIDO CONFIRMADO
   const [pedidoConfirmado, setPedidoConfirmado] = useState(false);
 
   const [avaliacao, setAvaliacao] = useState(null); 
@@ -53,10 +51,13 @@ function App() {
   const [itemParaAdicionarQtd, setItemParaAdicionarQtd] = useState(null); 
   const [quantidadeInput, setQuantidadeInput] = useState(1); 
 
+  // ESTADO DA NOTIFICAÇÃO (TOAST)
+  const [notificacao, setNotificacao] = useState(null);
+
   const carouselRef = useRef();
   const [width, setWidth] = useState(0);
 
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xdkrkznk";
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/mbljryal"; 
 
   useEffect(() => {
     const updateWidth = () => {
@@ -76,9 +77,20 @@ function App() {
   // --- FUNÇÕES ---
   const valorTotal = carrinho.reduce((acc, item) => acc + item.precoNum, 0);
 
+  // Função auxiliar para mostrar o toast
+  const dispararNotificacao = (produto) => {
+    setNotificacao(produto); // Define qual produto mostrar
+    // O setTimeout do fechamento será controlado automaticamente pelo AnimatePresence ou useEffect se quisesse, 
+    // mas aqui vou deixar o onAnimationComplete do Framer Motion cuidar disso ou um timer simples.
+    setTimeout(() => {
+        setNotificacao(null);
+    }, 3000);
+  };
+
   const adicionarAoCarrinho = (produto) => {
     setCarrinho([...carrinho, produto]); 
-    setTelaCarrinho(true); 
+    dispararNotificacao(produto); // MOSTRA A NOTIFICAÇÃO
+    // NÃO ABRE MAIS A TELA DO CARRINHO AUTOMATICAMENTE
   };
 
   const manipularQuantidade = (acao) => {
@@ -100,23 +112,26 @@ function App() {
     if (itemParaAdicionarQtd && quantidadeInput > 0) {
       const novosItens = Array(Number(quantidadeInput)).fill(itemParaAdicionarQtd);
       setCarrinho([...carrinho, ...novosItens]);
+      
+      dispararNotificacao(itemParaAdicionarQtd); // MOSTRA A NOTIFICAÇÃO
+      
       setItemParaAdicionarQtd(null);
       setMostrarOpcoesAdicionar(false);
     }
   };
 
   const finalizarPedido = () => {
-    if (carrinho.length === 0) return;
+    if (carrinho.length === 0) return; 
     setTelaCarrinho(false); 
-    setPedidoConfirmado(true);
-    setCarrinho([]);
+    setPedidoConfirmado(true); 
+    setCarrinho([]); 
   };
 
   const handleVoltar = () => {
     if (telaCarrinho) setTelaCarrinho(false);
     else if (telaFeedback) { setTelaFeedback(false); setSucesso(false); }
     else if (telaSobre) setTelaSobre(false);
-    else if (pedidoConfirmado) setPedidoConfirmado(false); // Volta do sucesso para home
+    else if (pedidoConfirmado) setPedidoConfirmado(false);
     else setProdutoSelecionado(null);
   };
 
@@ -126,7 +141,7 @@ function App() {
     const formData = new FormData(e.target);
     if (avaliacao) formData.append('Avaliacao', avaliacao === 'like' ? 'Gostei 👍' : 'Não gostei 👎');
     try {
-        const response = await fetch(FORMSPREE_ENDPOINT, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
+        const response = await fetch(FORMSPREE_ENDPOINT, { method: 'POST', body: JSON.stringify(Object.fromEntries(formData)), headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } });
         if (response.ok) { setSucesso(true); e.target.reset(); setAvaliacao(null); } 
         else { alert("Erro ao enviar. Tente novamente."); }
     } catch (error) { alert("Erro de conexão."); } 
@@ -137,7 +152,7 @@ function App() {
     setTelaCarrinho(false);
     setTelaFeedback(false);
     setTelaSobre(false);
-    setPedidoConfirmado(false); // Reseta pedido confirmado ao navegar
+    setPedidoConfirmado(false); 
     setMenuAberto(false);
     setProdutoSelecionado(null);
     setSucesso(false); 
@@ -148,6 +163,31 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* NOTIFICAÇÃO TOAST (FIXA NO TOPO ESQUERDO) */}
+      <AnimatePresence>
+        {notificacao && (
+          <motion.div 
+            className="toast-notification"
+            initial={{ x: -300, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -300, opacity: 0 }}
+            key={Date.now()} // Garante que reinicia se clicar rápido
+          >
+            <div className="toast-content">
+                <img src={notificacao.img} alt={notificacao.nome} />
+                <p>O produto <strong>{notificacao.nome}</strong> foi adicionado ao carrinho!</p>
+            </div>
+            {/* BARRINHA DE PROGRESSO */}
+            <motion.div 
+                className="toast-progress"
+                initial={{ width: "100%" }}
+                animate={{ width: "0%" }}
+                transition={{ duration: 3, ease: "linear" }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <header>
         <div className="header-content">
           {(produtoSelecionado || telaCarrinho || telaFeedback || telaSobre || pedidoConfirmado) ? (
@@ -187,26 +227,16 @@ function App() {
 
       <main>
         <AnimatePresence mode="wait">
-          
-          {/* TELA DE PEDIDO CONFIRMADO (NOVA) */}
           {pedidoConfirmado ? (
-            <motion.div 
-              key="pedido-sucesso"
-              className="pedido-sucesso-container"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
+            <motion.div key="pedido-sucesso" className="pedido-sucesso-container" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ opacity: 0 }}>
               <div className="icon-check-grand"><CheckCircleIcon /></div>
-              <h2>Seu pedido foi confirmado!</h2>
-              <p>Agradecemos a preferência. Prepare-se para comer bem!</p>
+              <h2>Seu pedido foi confirmado!</h2><p>Agradecemos a preferência. Prepare-se para comer bem!</p>
               <button className="btn-finalizar" onClick={() => navegar('home')}>Voltar ao Início</button>
             </motion.div>
-
           ) : telaSobre ? (
             <motion.div key="sobre" className="sobre-container" initial={{opacity:0, y:30}} animate={{opacity:1, y:0}} exit={{opacity:0, y:30}}>
               <div className="sobre-esquerda">
-                <div className="card-fachada"><img src="img/fachada-da-loja.png" alt="Fachada" className="img-fachada"/><div className="endereco-box"><MapPinIcon /><p>Rua Dr. Ricardo Gonçalves, 170</p></div></div>
+                <div className="card-fachada"><img src="img/fachada.jpg" alt="Fachada" className="img-fachada"/><div className="endereco-box"><MapPinIcon /><p>Rua Dr. Ricardo Gonçalves, 170</p></div></div>
               </div>
               <div className="sobre-direita">
                 <div className="botoes-contato"><a href="https://instagram.com" target="_blank" rel="noreferrer" className="btn-social instagram"><div className="icon-social"><InstaIcon /></div><span>@Padaria_RibaCity</span></a><a href="https://whatsapp.com" target="_blank" rel="noreferrer" className="btn-social whatsapp"><div className="icon-social"><WhatsIcon /></div><span>11 90835-4792</span></a></div>
@@ -214,7 +244,6 @@ function App() {
                 <div className="logo-sobre"><img src="img/imagem-da-padaria.png" alt="Logo" /></div>
               </div>
             </motion.div>
-
           ) : telaFeedback ? (
              <motion.div key="feedback" className={`feedback-container ${sucesso ? 'container-sucesso' : ''}`} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }}>
                 {sucesso ? (
@@ -223,15 +252,14 @@ function App() {
                     <>
                         <div className="feedback-header"><h2>Sua opinião importa!</h2><p>Ajude a Padaria Riba City a melhorar.</p></div>
                         <form className="feedback-form" onSubmit={handleFeedbackSubmit}>
-                        <div className="input-group"><input type="text" name="nome" placeholder="Seu nome*" required /></div>
-                        <div className="input-group"><input type="email" name="email" placeholder="Seu email*" required /></div>
-                        <div className="input-group message-group"><p className="label-mensagem">Mensagem</p><div className="textarea-container"><textarea name="mensagem" placeholder="Escreva a sua mensagem aqui...*" required></textarea><div className="avaliacao-icons"><motion.button type="button" className={`icon-btn ${avaliacao==='like'?'active-like':''}`} onClick={()=>setAvaliacao('like')} whileTap={{scale:1.2}}><ThumbUp active={avaliacao==='like'}/></motion.button><motion.button type="button" className={`icon-btn ${avaliacao==='dislike'?'active-dislike':''}`} onClick={()=>setAvaliacao('dislike')} whileTap={{scale:1.2}}><ThumbDown active={avaliacao==='dislike'}/></motion.button></div></div></div>
+                        <div className="input-group"><input type="text" name="Nome" placeholder="Seu nome*" required /></div>
+                        <div className="input-group"><input type="email" name="Email" placeholder="Seu email*" required /></div>
+                        <div className="input-group message-group"><p className="label-mensagem">Mensagem</p><div className="textarea-container"><textarea name="Mensagem" placeholder="Escreva a sua mensagem aqui...*" required></textarea><div className="avaliacao-icons"><motion.button type="button" className={`icon-btn ${avaliacao==='like'?'active-like':''}`} onClick={()=>setAvaliacao('like')} whileTap={{scale:1.2}}><ThumbUp active={avaliacao==='like'}/></motion.button><motion.button type="button" className={`icon-btn ${avaliacao==='dislike'?'active-dislike':''}`} onClick={()=>setAvaliacao('dislike')} whileTap={{scale:1.2}}><ThumbDown active={avaliacao==='dislike'}/></motion.button></div></div></div>
                         <motion.button className="btn-enviar" whileHover={{scale:1.02}} whileTap={{scale:0.95}} disabled={enviando}>{enviando ? "Enviando..." : "Enviar Feedback"}</motion.button>
                         </form>
                     </>
                 )}
              </motion.div>
-
           ) : telaCarrinho ? (
             <motion.div key="carrinho" className="carrinho-container" initial={{y:50, opacity:0}} animate={{y:0, opacity:1}} exit={{y:50, opacity:0}}>
               <div className="carrinho-header"><h2>Meu Pedido</h2></div>
@@ -240,11 +268,8 @@ function App() {
                 <div className="linha-info linha-botoes"><span className="label">Produto:</span><div className="botoes-qtd"><button onClick={()=>manipularQuantidade('remover')}>-</button><button onClick={()=>manipularQuantidade('adicionar')}>+</button></div></div>
                 <div className="linha-total"><span className="label">Total:</span><span className="valor">R$ {valorTotal.toFixed(2).replace('.', ',')}</span></div>
                 <div className="campo-obs"><label>Observações:</label><input type="text" placeholder="Ex: Tirar cebola, aquecer..." /></div>
-                
-                {/* BOTÃO FINALIZAR CHAMA A NOVA FUNÇÃO */}
                 <motion.button className="btn-finalizar" whileTap={{scale:0.95}} onClick={finalizarPedido}>Confirmar Pedido</motion.button>
               </div>
-
               <AnimatePresence>
                 {mostrarOpcoesAdicionar && !itemParaAdicionarQtd && (
                   <motion.div className="modal-adicionar-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMostrarOpcoesAdicionar(false)}>
@@ -253,9 +278,7 @@ function App() {
                       <div className="lista-produtos-extra">
                         {todosProdutos.map((p) => (
                           <div className="card-extra" key={p.id} onClick={() => selecionarProdutoParaQtd(p)}>
-                            <img src={p.img} alt={p.nome} />
-                            <p>{p.nome}</p>
-                            <span>{p.preco}</span>
+                            <img src={p.img} alt={p.nome} /><p>{p.nome}</p><span>{p.preco}</span>
                           </div>
                         ))}
                       </div>
@@ -277,7 +300,6 @@ function App() {
                 )}
               </AnimatePresence>
             </motion.div>
-
           ) : !produtoSelecionado ? (
             <motion.div key="lista" className="container-lista" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:0.3}}>
               <motion.h2 className="section-title">Receitas Fresquinhas</motion.h2>
@@ -288,20 +310,18 @@ function App() {
               <p className="hint-scroll">Arraste para o lado →</p>
               <motion.div className="carousel-container" ref={carouselRef}><motion.div className="carousel-inner" drag="x" dragConstraints={{right:0, left:-width}} whileTap={{cursor:"grabbing"}}>{bolos.map((bolo)=>(<motion.div className="card-bolo" key={bolo.id} whileTap={{scale:0.98}}><img src={bolo.img} alt={bolo.nome}/><div className="bolo-info"><h3>{bolo.nome}</h3><span className="bolo-preco">{bolo.preco}</span><button className="btn-ver-detalhes" onClick={()=>setProdutoSelecionado(bolo)}>Ver</button></div></motion.div>))}</motion.div></motion.div>
             </motion.div>
-
           ) : (
             <motion.div key="detalhe" className="detalhe-container" initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} exit={{opacity:0, y:20}}>
               <div className="card-branco">
                 <div className="lado-texto"><div className="descricao-conteudo">{produtoSelecionado.desc}</div></div>
-                <div className="lado-painel-cinza"><div className="img-frame"><img src={produtoSelecionado.img} alt={produtoSelecionado.nome}/></div><h2>{produtoSelecionado.nome}</h2><span className="preco-destaque">{produtoSelecionado.preco}</span><motion.button className="btn-comprar-final" whileTap={{scale:0.9}} onClick={()=>adicionarAoCarrinho(produtoSelecionado)}>Comprar</motion.button></div>
+                <div className="lado-painel-cinza"><div className="img-frame"><img src={produtoSelecionado.img} alt={produtoSelecionado.nome}/></div><h2>{produtoSelecionado.nome}</h2><span className="preco-destaque">{produtoSelecionado.preco}</span><motion.button className="btn-comprar-final" whileTap={{scale:0.9}} onClick={()=>adicionarAoCarrinho(produtoSelecionado)}>Adicionar ao carrinho</motion.button></div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </main>
-      <footer>
-        <p>&copy; 2025 Padaria Riba City. Todos os direitos reservados.</p>
-      </footer>
+
+      <footer><p>&copy; 2025 Padaria Riba City. Todos os direitos reservados.</p></footer>
     </div>
   );
 }
