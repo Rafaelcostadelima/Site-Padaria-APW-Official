@@ -56,7 +56,7 @@ function App() {
   const carouselRef = useRef();
   const [width, setWidth] = useState(0);
 
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/mbljryal"; 
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xdkrkznk"; 
 
   useEffect(() => {
     const updateWidth = () => {
