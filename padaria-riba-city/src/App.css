@@ -1,0 +1,553 @@
+@import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&family=Irish+Grover&family=Italiana&display=swap');
+
+:root {
+  --laranja: #EA8800;
+  --laranja-escuro: #BF6600;
+  --preto: #1A1818;
+  --cinza-painel: #7A7A7A;
+  --branco: #f5f5f5;
+  --sombra: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body, html, #root {
+  min-height: 100vh;
+  background-color: var(--laranja);
+  background-image: linear-gradient(180deg, var(--laranja) 0%, #d17a00 100%);
+  font-family: 'Irish Grover', cursive;
+  overflow-x: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --- HEADER --- */
+/* --- HEADER --- */
+header {
+  background-color: var(--laranja-escuro);
+  padding: 15px 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative; /* Essencial para a logo se centralizar */
+  height: 50px; /* Define uma altura fixa para alinhar tudo */
+}
+
+/* LOGO CENTRALIZADA ABSOLUTA */
+.logo-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Puxa 50% do próprio tamanho para esquerda */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none; /* Remove sublinhado se for link */
+}
+
+.logo-center img {
+  height: 50px; /* Aumentei um pouquinho para destacar */
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+}
+
+.logo-text {
+  font-family: 'Italiana', serif;
+  font-size: 2rem; /* Texto maior */
+  color: var(--branco);
+  white-space: nowrap;
+}
+
+/* BOTÃO VOLTAR E MENU */
+.btn-voltar {
+  background-color: var(--preto);
+  color: var(--branco);
+  border: none;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-family: 'Inknut Antiqua', serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  z-index: 10; /* Garante que fique clicável */
+  position: relative; /* Para o z-index funcionar */
+}
+
+.menu-desktop {
+  display: flex;
+  z-index: 10;
+  position: relative;
+}
+
+.menu-desktop a {
+  color: white;
+  text-decoration: none;
+  margin-right: 20px;
+  font-family: 'Inknut Antiqua', serif;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+}
+
+.menu-desktop a:hover {
+  opacity: 0.8;
+}
+
+.spacer-header {
+  display: none; /* Não precisamos mais dele com position absolute */
+}
+
+@media (min-width: 999px) { .spacer-header { display: block; } }
+
+/* --- MENU MOBILE --- */
+.btn-menu-mobile {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 10;
+}
+
+.menu-overlay-backdrop {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); z-index: 150; backdrop-filter: blur(3px);
+}
+
+.mobile-menu-drawer {
+  position: fixed; top: 0; left: 0; width: 80%; max-width: 300px; height: 100%;
+  background-color: var(--laranja-escuro); z-index: 200;
+  display: flex; flex-direction: column; padding: 20px;
+  box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+}
+
+.drawer-header {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; margin-bottom: 20px;
+}
+.drawer-header h3 { font-family: 'Italiana', serif; color: white; font-size: 1.8rem; }
+.drawer-header button { background: none; border: none; cursor: pointer; }
+
+.drawer-links { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+.drawer-links li {
+  color: white; font-family: 'Inknut Antiqua', serif; font-size: 1.3rem;
+  cursor: pointer; padding: 10px; border-radius: 10px; transition: background 0.2s;
+}
+.drawer-links li:active { background-color: rgba(255,255,255,0.2); }
+.drawer-footer { margin-top: auto; text-align: center; color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+
+/* --- MAIN --- */
+main {
+  flex: 1; padding: 20px 15px; display: flex; justify-content: center;
+}
+
+.container-lista { width: 100%; max-width: 1200px; display: flex; flex-direction: column; align-items: center; }
+
+.section-title {
+  font-family: 'Italiana', serif; color: var(--branco); font-size: 2.5rem;
+  text-align: center; text-shadow: 2px 2px 0px rgba(0,0,0,0.1); margin-bottom: 25px;
+}
+.hint-scroll { color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 10px; font-family: sans-serif; }
+
+.product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; }
+@media (min-width: 600px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+@media (min-width: 900px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 30px; } }
+
+.card-inicial {
+  background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: var(--sombra);
+  display: flex; flex-direction: column; justify-content: space-between; height: 100%;
+}
+.card-img-wrapper { width: 100%; height: 120px; border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+.card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+.card-inicial h3 { font-size: 1.1rem; margin-bottom: 5px; color: var(--laranja-escuro); line-height: 1.2; }
+.card-price-tag { display: block; font-size: 0.9rem; color: #555; margin-bottom: 10px; font-family: sans-serif; font-weight: bold; }
+.btn-ver-detalhes { padding: 8px 0; width: 100%; background-color: var(--cinza-painel); color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'Inknut Antiqua', serif; font-size: 0.8rem; margin-top: 10px;}
+
+/* CARROSSEL */
+.carousel-container { width: 100%; overflow: hidden; padding: 10px 0; }
+.carousel-inner { display: flex; gap: 15px; width: fit-content; padding: 0 10px; }
+.card-bolo {
+  background-color: var(--branco); min-width: 240px; height: 320px; border-radius: 15px; padding: 15px;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between; box-shadow: var(--sombra);
+}
+.card-bolo img { width: 100%; height: 160px; object-fit: cover; border-radius: 10px; pointer-events: none; }
+.bolo-info h3 { font-size: 1.2rem; margin: 10px 0; color: var(--laranja-escuro); }
+
+/* DETALHES DO PRODUTO */
+.detalhe-container { width: 100%; max-width: 900px; display: flex; justify-content: center; }
+.card-branco {
+  background-color: var(--branco); width: 100%; border-radius: 25px; display: flex;
+  overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); min-height: 400px;
+}
+.lado-texto { flex: 1; padding: 30px; display: flex; align-items: center; }
+.lado-painel-cinza {
+  flex: 0.8; background-color: var(--cinza-painel); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 30px; gap: 10px; border-left: 1px solid #999;
+}
+.img-frame { width: 100%; max-width: 220px; aspect-ratio: 4/3; overflow: hidden; border-radius: 15px; border: 3px solid rgba(255,255,255,0.4); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+.img-frame img { width: 100%; height: 100%; object-fit: cover; }
+.lado-painel-cinza h2 { font-size: 1.8rem; text-align: center; color: black; line-height: 1.1; }
+.preco-destaque { font-size: 1.4rem; font-weight: bold; color: white; text-shadow: 1px 1px 0 #000; }
+.btn-comprar-final {
+  background-color: #C0C0C0; font-family: 'Irish Grover', cursive; font-size: 1.3rem; padding: 12px 30px;
+  border-radius: 50px; border: 1px solid #666; cursor: pointer; box-shadow: 0 4px 0px #888; width: 100%; margin-top: 10px;
+}
+.descricao-conteudo { font-size: 1.1rem; line-height: 1.5; color: #333; }
+.descricao-conteudo ul { padding-left: 20px; margin-top: 10px; }
+
+/* --- CARRINHO (AQUI ESTAVA O PROBLEMA) --- */
+.carrinho-container {
+  background-color: #D97706; /* Cor do fundo do carrinho */
+  width: 100%; max-width: 500px; padding: 30px;
+  border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  display: flex; flex-direction: column; gap: 20px;
+  color: white; font-family: 'Inknut Antiqua', serif;
+}
+
+.carrinho-header h2 {
+  font-family: 'Italiana', serif; color: white; font-size: 2.2rem;
+  text-align: center; margin-bottom: 5px;
+}
+
+/* Lista de itens (caixa transparente com scroll) */
+.lista-pedidos {
+  max-height: 150px; overflow-y: auto; 
+  background: rgba(0,0,0,0.2); /* Fundo escuro transparente */
+  padding: 10px 15px; border-radius: 10px; 
+  color: white; list-style: disc; margin-left: 20px;
+}
+
+/* Linha de informações (Flexbox para separar Label e Conteúdo) */
+.linha-info {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  font-size: 1.1rem; gap: 10px;
+  margin-top: 20px;
+}
+
+/* Botões de quantidade */
+.linha-botoes { align-items: center; }
+.botoes-qtd { display: flex; gap: 15px; }
+.botoes-qtd button {
+  background: white; color: var(--laranja-escuro);
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: none; font-weight: bold; font-size: 1.2rem; cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Valor total */
+.linha-total {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 1.4rem; font-weight: bold; border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 15px; margin-top: 5px;
+}
+
+/* Campo de observação */
+.campo-obs { display: flex; flex-direction: column; gap: 5px; }
+.campo-obs label { font-size: 1rem; }
+.campo-obs input {
+  width: 100%; padding: 12px; border-radius: 10px; border: none;
+  font-family: 'Inknut Antiqua', serif; background-color: rgba(255,255,255,0.9);
+}
+
+.btn-finalizar {
+  background-color: #3E1E1E; color: white; font-family: 'Italiana', serif;
+  font-size: 1.2rem; padding: 15px; width: 100%; border: none;
+  border-radius: 15px; margin-top: 10px; cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s;
+}
+.btn-finalizar:active { transform: scale(0.98); }
+
+/* --- FEEDBACK --- */
+.feedback-container {
+  background-color: #EA8800; width: 100%; max-width: 500px; padding: 30px;
+  border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  display: flex; flex-direction: column; gap: 20px;
+}
+.feedback-header h2 { font-family: 'Italiana', serif; color: white; font-size: 2.2rem; text-align: center; }
+.feedback-header p { color: rgba(255,255,255,0.9); text-align: center; font-size: 0.9rem; font-family: 'Inknut Antiqua', serif; }
+.feedback-form { display: flex; flex-direction: column; gap: 15px; }
+.input-group input, .textarea-container textarea {
+  width: 100%; padding: 15px; border-radius: 12px; border: none;
+  font-family: 'Inknut Antiqua', serif; background-color: rgba(255, 255, 255, 0.85); font-size: 1rem;
+}
+.textarea-container { background-color: rgba(255, 255, 255, 0.85); padding: 10px; display: flex; flex-direction: column; border-radius: 12px; }
+.textarea-container textarea { background: transparent; min-height: 120px; resize: vertical; padding: 0; }
+.label-mensagem { color: #1A1818; font-family: 'Inknut Antiqua', serif; font-weight: bold; margin-bottom: 5px; font-size: 1.1rem; }
+.avaliacao-icons { display: flex; justify-content: flex-end; gap: 15px; margin-top: 5px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.1); }
+.icon-btn { background: none; border: none; cursor: pointer; color: #999; }
+.active-like { color: #2ecc71; } .active-dislike { color: #e74c3c; }
+.btn-enviar {
+  background-color: #dcdcdc; color: #000; font-family: 'Italiana', serif; font-weight: bold; font-size: 1.5rem;
+  border: none; border-radius: 12px; padding: 12px; cursor: pointer; box-shadow: 0 4px 0px #999; margin-top: 10px;
+}
+.btn-enviar:disabled { background-color: #999; cursor: not-allowed; }
+.feedback-sucesso { text-align: center; color: white; padding: 40px 20px; }
+
+/* --- TELA SOBRE NÓS --- */
+.sobre-container { width: 100%; max-width: 1000px; display: flex; justify-content: center; gap: 30px; padding: 20px; }
+.sobre-esquerda { flex: 1.2; }
+.card-fachada { background-color: var(--branco); border-radius: 20px; padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: flex; flex-direction: column; gap: 15px; height: 100%; }
+.img-fachada { width: 100%; height: 350px; object-fit: cover; border-radius: 15px; }
+.endereco-box { display: flex; align-items: center; gap: 15px; padding: 10px; justify-content: center; }
+.endereco-box p { font-family: 'Inknut Antiqua', serif; font-size: 1.2rem; color: #333; text-align: center; }
+.sobre-direita { flex: 0.8; display: flex; flex-direction: column; gap: 20px; }
+.botoes-contato { display: flex; flex-direction: column; gap: 15px; }
+.btn-social { background-color: rgba(255,255,255,0.9); padding: 15px 20px; border-radius: 15px; text-decoration: none; display: flex; align-items: center; gap: 15px; transition: transform 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.btn-social:hover { transform: scale(1.02); background-color: white; }
+.instagram .icon-social { color: #E1306C; } .whatsapp .icon-social { color: #25D366; }
+.btn-social span { color: #333; font-family: 'Inknut Antiqua', serif; font-weight: bold; font-size: 1rem; }
+.card-donos { background-color: rgba(255,255,255,0.85); border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.card-donos h3 { background-color: #BDBDBD; display: inline-block; padding: 5px 20px; border-radius: 20px; font-family: 'Inknut Antiqua', serif; color: #333; margin-bottom: 15px; font-size: 1.1rem; }
+.card-donos ul { list-style: none; padding: 0; }
+.card-donos li { font-family: 'Inknut Antiqua', serif; font-size: 1rem; margin-bottom: 8px; color: #333; }
+.logo-sobre { display: flex; justify-content: center; margin-top: auto; }
+.logo-sobre img { height: 120px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3)); }
+
+/* RESPONSIVIDADE EXTREMA */
+@media (max-width: 999px) {
+  .menu-desktop { display: none; }
+  .btn-menu-mobile { display: block; }
+  .spacer-header { display: none !important; }
+  .logo-center { flex: unset; position: absolute; left: 50%; transform: translateX(-50%); }
+  
+  .card-branco { flex-direction: column; }
+  .lado-painel-cinza { order: -1; border-left: none; border-bottom: 5px solid var(--laranja); padding: 20px; }
+  .img-frame { max-width: 180px; }
+  .lado-texto { padding: 20px; background-color: #fff; }
+  .descricao-conteudo { font-size: 1rem; }
+
+  /* Ajuste Sobre Nós Mobile */
+  .sobre-container { flex-direction: column; }
+  .img-fachada { height: 250px; }
+}
+
+/* --- ESTILO ESPECIAL PARA SUCESSO --- */
+
+/* Quando a classe .container-sucesso é adicionada via React */
+.feedback-container.container-sucesso {
+  max-width: 400px;
+  min-height: auto;
+  padding: 40px 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.feedback-sucesso {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza os itens (texto, botão) */
+  justify-content: center;
+  text-align: center; /* Centraliza o texto */
+  width: 100%;
+  gap: 20px;
+}
+
+.texto-sucesso p {
+  font-family: 'Inknut Antiqua', serif;
+  font-size: 1rem;
+  color: white;
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.feedback-sucesso h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+/* Ajuste no botão apenas dentro do sucesso para não ficar gigante */
+.feedback-sucesso .btn-finalizar {
+  width: auto; /* O botão fica do tamanho do texto */
+  padding: 12px 30px;
+  margin-top: 15px;
+}
+
+/* --- MODAL ADICIONAR ITEM EXTRA --- */
+.modal-adicionar-backdrop {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 300;
+  display: flex; justify-content: center; align-items: center;
+  backdrop-filter: blur(2px);
+}
+
+.modal-adicionar-content {
+  background-color: white;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 20px;
+  padding: 20px;
+  max-height: 80vh;
+  display: flex; flex-direction: column; gap: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.modal-adicionar-content h3 {
+  font-family: 'Italiana', serif;
+  text-align: center;
+  font-size: 1.8rem;
+  color: var(--laranja-escuro);
+}
+
+.lista-produtos-extra {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto; /* Scroll Horizontal (Carrossel) */
+  padding: 10px;
+}
+
+.card-extra {
+  flex: 0 0 140px; /* Tamanho fixo de cada card */
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+}
+
+.card-extra:hover {
+  transform: scale(1.05);
+  background-color: #eee;
+}
+
+.card-extra img {
+  width: 100%; height: 80px; object-fit: cover;
+  border-radius: 8px; margin-bottom: 5px;
+}
+
+.card-extra p {
+  font-family: 'Inknut Antiqua', serif;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.card-extra span {
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: var(--laranja-escuro);
+}
+
+.btn-cancelar-extra {
+  background-color: #999;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Inknut Antiqua', serif;
+  font-weight: bold;
+}
+
+/* --- MODAL DE QUANTIDADE --- */
+.modal-qtd-backdrop {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 400; /* Acima de tudo */
+  display: flex; justify-content: center; align-items: center;
+  backdrop-filter: blur(3px);
+}
+
+.modal-qtd-content {
+  background-color: white;
+  width: 90%; max-width: 400px;
+  border-radius: 20px; padding: 25px;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
+.modal-qtd-content h3 {
+  font-family: 'Italiana', serif; color: var(--laranja-escuro); font-size: 1.8rem;
+}
+
+.info-produto-qtd {
+  text-align: center;
+  color: var(--preto);
+}
+.info-produto-qtd img {
+  width: 100px; height: 100px; object-fit: cover; border-radius: 15px; margin-bottom: 10px;
+}
+.info-produto-qtd p {
+  font-family: 'Inknut Antiqua', serif; font-weight: bold; font-size: 1.2rem;
+}
+
+.controle-qtd-grande {
+  display: flex; align-items: center; gap: 20px;
+  background-color: #f0f0f0; padding: 10px 20px; border-radius: 50px;
+  color: var(--preto);
+}
+.controle-qtd-grande button {
+  background: white; border: none; width: 40px; height: 40px; border-radius: 50%;
+  font-size: 1.5rem; color: var(--laranja-escuro); cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.controle-qtd-grande span {
+  font-size: 1.5rem; font-weight: bold; min-width: 30px; text-align: center;
+}
+
+.botoes-qtd-confirmar {
+  display: flex; gap: 15px; width: 100%;
+}
+.btn-cancelar, .btn-confirmar {
+  flex: 1; padding: 12px; border-radius: 10px; border: none; cursor: pointer;
+  font-family: 'Inknut Antiqua', serif; font-weight: bold; font-size: 1rem;
+}
+.btn-cancelar { background-color: #ccc; color: #333; }
+.btn-confirmar { background-color: var(--laranja-escuro); color: white; }
+
+/* --- PEDIDO CONFIRMADO --- */
+.pedido-sucesso-container {
+  background-color: #EA8800;
+  width: 90%; max-width: 400px;
+  border-radius: 25px;
+  padding: 40px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; color: white; gap: 20px;
+}
+
+.icon-check-grand {
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  width: 100px; height: 100px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px;
+}
+
+.pedido-sucesso-container h2 {
+  font-family: 'Italiana', serif; font-size: 2.2rem; line-height: 1.1;
+}
+
+.pedido-sucesso-container p {
+  font-family: 'Inknut Antiqua', serif; font-size: 1rem; opacity: 0.9;
+}
+
+footer {
+  background-color: var(--laranja-escuro);
+  padding: 20px;
+  text-align: center;
+  color: var(--branco);
+  margin-top: auto; /* Empurra o footer para o final se a página for curta */
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+}
+
+footer p {
+  font-family: 'Inknut Antiqua', serif;
+  font-size: 0.9rem;
+  margin: 0;
+}
