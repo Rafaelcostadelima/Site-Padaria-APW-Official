@@ -1,9 +1,13 @@
+
 {
   "name": "padaria-riba-city",
+  "homepage": "https://Rafaelcostadelima.github.io/Site-Padaria-APW-Official",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
