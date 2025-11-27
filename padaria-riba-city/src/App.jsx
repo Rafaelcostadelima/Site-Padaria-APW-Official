@@ -57,7 +57,7 @@ function App() {
   const carouselRef = useRef();
   const [width, setWidth] = useState(0);
 
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/mbljryal"; 
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xdkrkznk"; 
 
   useEffect(() => {
     const updateWidth = () => {
@@ -236,10 +236,10 @@ function App() {
           ) : telaSobre ? (
             <motion.div key="sobre" className="sobre-container" initial={{opacity:0, y:30}} animate={{opacity:1, y:0}} exit={{opacity:0, y:30}}>
               <div className="sobre-esquerda">
-                <div className="card-fachada"><img src="img/fachada.jpg" alt="Fachada" className="img-fachada"/><div className="endereco-box"><MapPinIcon /><p>Rua Dr. Ricardo Gonçalves, 170</p></div></div>
+                <div className="card-fachada"><img src="img/fachada-da-loja.jpg" alt="Fachada" className="img-fachada"/><div className="endereco-box"><MapPinIcon /><p>Rua Dr. Ricardo Gonçalves, 170</p></div></div>
               </div>
               <div className="sobre-direita">
-                <div className="botoes-contato"><a href="https://instagram.com" target="_blank" rel="noreferrer" className="btn-social instagram"><div className="icon-social"><InstaIcon /></div><span>@Padaria_RibaCity</span></a><a href="https://whatsapp.com" target="_blank" rel="noreferrer" className="btn-social whatsapp"><div className="icon-social"><WhatsIcon /></div><span>11 90835-4792</span></a></div>
+                <div className="botoes-contato"><a href="" target="_blank" rel="noreferrer" className="btn-social instagram"><div className="icon-social"><InstaIcon /></div><span>@Padaria_RibaCity</span></a><a href="" target="_blank" rel="noreferrer" className="btn-social whatsapp"><div className="icon-social"><WhatsIcon /></div><span>11 90835-4792</span></a></div>
                 <div className="card-donos"><h3>Donos</h3><ul><li>Pablo</li><li>Maria Eduarda</li><li>Lívia Maria</li><li>Matheus Fabri</li><li>Yasmin</li></ul></div>
                 <div className="logo-sobre"><img src="img/imagem-da-padaria.png" alt="Logo" /></div>
               </div>
@@ -252,9 +252,9 @@ function App() {
                     <>
                         <div className="feedback-header"><h2>Sua opinião importa!</h2><p>Ajude a Padaria Riba City a melhorar.</p></div>
                         <form className="feedback-form" onSubmit={handleFeedbackSubmit}>
-                        <div className="input-group"><input type="text" name="Nome" placeholder="Seu nome*" required /></div>
-                        <div className="input-group"><input type="email" name="Email" placeholder="Seu email*" required /></div>
-                        <div className="input-group message-group"><p className="label-mensagem">Mensagem</p><div className="textarea-container"><textarea name="Mensagem" placeholder="Escreva a sua mensagem aqui...*" required></textarea><div className="avaliacao-icons"><motion.button type="button" className={`icon-btn ${avaliacao==='like'?'active-like':''}`} onClick={()=>setAvaliacao('like')} whileTap={{scale:1.2}}><ThumbUp active={avaliacao==='like'}/></motion.button><motion.button type="button" className={`icon-btn ${avaliacao==='dislike'?'active-dislike':''}`} onClick={()=>setAvaliacao('dislike')} whileTap={{scale:1.2}}><ThumbDown active={avaliacao==='dislike'}/></motion.button></div></div></div>
+                        <div className="input-group"><input type="text" name="nome" placeholder="Seu nome*" required /></div>
+                        <div className="input-group"><input type="email" name="email" placeholder="Seu email*" required /></div>
+                        <div className="input-group message-group"><p className="label-mensagem">Mensagem</p><div className="textarea-container"><textarea name="mensagem" placeholder="Escreva a sua mensagem aqui...*" required></textarea><div className="avaliacao-icons"><motion.button type="button" className={`icon-btn ${avaliacao==='like'?'active-like':''}`} onClick={()=>setAvaliacao('like')} whileTap={{scale:1.2}}><ThumbUp active={avaliacao==='like'}/></motion.button><motion.button type="button" className={`icon-btn ${avaliacao==='dislike'?'active-dislike':''}`} onClick={()=>setAvaliacao('dislike')} whileTap={{scale:1.2}}><ThumbDown active={avaliacao==='dislike'}/></motion.button></div></div></div>
                         <motion.button className="btn-enviar" whileHover={{scale:1.02}} whileTap={{scale:0.95}} disabled={enviando}>{enviando ? "Enviando..." : "Enviar Feedback"}</motion.button>
                         </form>
                     </>
